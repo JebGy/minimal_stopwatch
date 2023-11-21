@@ -1,0 +1,77 @@
+---
+//create a function that will change the state of a var in seconds
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>StopWatch</title>
+  </head>
+  <body
+    class="bg-zinc-800 text-zinc-100 justify-center items-center flex flex-col h-screen transition-all"
+  >
+    <div class="bg-zinc-500 w-fit h-fit p-8 shadow-xl shadow-zinc-900 flex flex-col justify-center items-center rounded-xl">
+      <div
+        class="flex flex-row gap-3 p-8 rounded-xl items-center text-green-500 font-bold justify-center mb-5 bg-zinc-950"
+      >
+        <p class="text-4xl" id="hour">0h</p>
+        <p class="text-4xl" id="minute">0m</p>
+        <p class="text-4xl" id="second">0s</p>
+      </div>
+      <button
+        id="update"
+        class="px-4 py-2 bg-green-500 rounded-full transition-all font-bold text-black shadow-md shadow-zinc-900 active:scale-75">Start</button
+      >
+    </div>
+
+    <script>
+      const buttonRef = document.querySelector("#update");
+      const secondRef = document.querySelector("#second");
+      const minuteRef = document.querySelector("#minute");
+      const hourRef = document.querySelector("#hour");
+      const bodyRef = document.querySelector("body");
+
+      let isActive = false;
+      let timerID;
+      let seconds = 0;
+      let minutes = 0;
+      let hours = 0;
+
+      const startTimer = () => {
+        timerID = setInterval(() => {
+          secondRef.textContent = `${seconds}s`;
+          minuteRef.textContent = `${minutes}m`;
+          hourRef.textContent = `${hours}h`;
+          seconds += 1;
+          if (seconds == 60) {
+            minutes += 1;
+            seconds = 0;
+          } else if (minutes == 60) {
+            hours += 1;
+            minutes = 0;
+          }
+        }, 1000);
+      };
+
+      buttonRef.addEventListener("click", () => {
+        isActive = !isActive;
+        if (!isActive) {
+          clearInterval(timerID);
+          bodyRef.classList.toggle("bg-zinc-800");
+          bodyRef.classList.toggle("bg-green-500");
+          buttonRef.classList.toggle("bg-red-500");
+          buttonRef.textContent = "Start";
+        } else {
+          startTimer();
+          bodyRef.classList.toggle("bg-zinc-800");
+          bodyRef.classList.toggle("bg-green-500");
+          buttonRef.classList.toggle("bg-red-500");
+          buttonRef.textContent = "Stop";
+        }
+      });
+    </script>
+  </body>
+</html>
